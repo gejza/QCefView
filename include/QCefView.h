@@ -479,7 +479,16 @@ public:
   /// <param name="painter">The target painter</param>
   void render(QPainter* painter);
 
+  /// Sets the zoom level of Chromium browser to the provided value.
+  void setZoomLevel(double zoomLevel);
+
+  /// Returns the current zoom level of Chromium browser.
+  /// Returns 0 if the zoom is default and hasn't been changed before,
+  /// or if Chromium browser hasn't been created yet.
+  double getZoomLevel();
+
 protected:
+
   /// <summary>
   /// Please refer to QWidget::paintEvent
   /// </summary>

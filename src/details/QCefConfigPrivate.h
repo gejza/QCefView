@@ -27,6 +27,8 @@ public:
 
   static ArgsMap& GetCommandLineArgs(const QCefConfig* config);
 
+  void installCustomMessageHandler(const std::function<void(int level, const char* message)>& callback) const;
+
 public:
   std::string locale_;
   std::string userAgent_;

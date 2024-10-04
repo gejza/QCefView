@@ -9,6 +9,7 @@
 
 #include <CefViewCoreProtocol.h>
 #include <CefViewWingProcessName.h>
+#include <CefViewBrowserApp.h>
 
 #ifdef _WIN32
 #   include <windef.h>
@@ -162,4 +163,11 @@ QCefConfigPrivate::GetCommandLineArgs(const QCefConfig* config)
   }
 
   return config->d_ptr->commandLineArgs_;
+}
+
+void
+QCefConfigPrivate::installCustomMessageHandler(
+  const std::function<void(int level, const char* message)>& callback) const
+{
+  CefViewBrowserApp::installCustomMessageHandler(callback);
 }
