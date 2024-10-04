@@ -39,6 +39,14 @@ if(USE_SANDBOX AND(OS_WINDOWS OR OS_MACOS))
   add_definitions(-DCEF_USE_SANDBOX)
 endif()
 
+# Set our custom name of the QCefView.dll library.
+if(NOT CEFVIEW_LIB_NAME)
+  set(CEFVIEW_LIB_NAME "QCefView")
+  message(STATUS
+    "CEFVIEW_LIB_NAME is empty, use default name of the library: QCefView.dll\n"
+    "You can change the name by adding -DCEFVIEW_LIB_NAME=xxx to commandline for generation")
+endif()
+
 if(OS_WINDOWS)
   file(GLOB_RECURSE QCefView_Windows_SRC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/win/*.h"
@@ -50,27 +58,27 @@ if(OS_WINDOWS)
     FILES ${QCefView_Windows_SRC_FILES}
   )
 
-  add_library(QCefView ${QCEFVIEW_LIB_TYPE}
+  add_library(${CEFVIEW_LIB_NAME} ${QCEFVIEW_LIB_TYPE}
     ${QCefView_INCLUDE_FILES}
     ${QCefView_SRC_FILES}
     ${QCefView_details_SRC_FILES}
     ${QCefView_Windows_SRC_FILES}
   )
 
-  target_compile_definitions(QCefView PRIVATE
+  target_compile_definitions(${CEFVIEW_LIB_NAME} PRIVATE
     UNICODE
     _UNICODE
     QCEFVIEW_LIB
   )
 
-  add_custom_command(TARGET QCefView
+  add_custom_command(TARGET ${CEFVIEW_LIB_NAME}
     PRE_BUILD
 
     # copy binary files of CefViewCore
     COMMAND ${CMAKE_COMMAND}
     -E copy_directory
     "$<TARGET_FILE_DIR:${CEFVIEW_WING_NAME}>"
-    "$<TARGET_FILE_DIR:QCefView>"
+    "$<TARGET_FILE_DIR:${CEFVIEW_LIB_NAME}>"
 
     # gnerate a file contains timestamp
     COMMAND ${CMAKE_COMMAND}
@@ -91,14 +99,14 @@ if(OS_LINUX)
     FILES ${QCefView_Linux_SRC_FILES}
   )
 
-  add_library(QCefView ${QCEFVIEW_LIB_TYPE}
+  add_library(${CEFVIEW_LIB_NAME} ${QCEFVIEW_LIB_TYPE}
     ${QCefView_INCLUDE_FILES}
     ${QCefView_SRC_FILES}
     ${QCefView_details_SRC_FILES}
     ${QCefView_Linux_SRC_FILES}
   )
 
-  target_compile_definitions(QCefView
+  target_compile_definitions(${CEFVIEW_LIB_NAME}
     PRIVATE
     QCEFVIEW_LIB
   )
@@ -109,14 +117,14 @@ if(OS_LINUX)
     BUILD_WITH_INSTALL_RPATH TRUE
   )
 
-  add_custom_command(TARGET QCefView
+  add_custom_command(TARGET ${CEFVIEW_LIB_NAME}
     PRE_BUILD
 
     # copy binary files of CefViewCore
     COMMAND ${CMAKE_COMMAND}
     -E copy_directory
-    "$<TARGET_FILE_DIR:CefViewWing>"
-    "$<TARGET_FILE_DIR:QCefView>"
+    "$<TARGET_FILE_DIR:${CEFVIEW_WING_NAME}>"
+    "$<TARGET_FILE_DIR:${CEFVIEW_LIB_NAME}>"
   )
 endif() # OS_LINUX
 
@@ -142,7 +150,7 @@ if(OS_MACOS)
   )
   set(QCefView_INFO_PLIST_FILE "${CMAKE_CURRENT_LIST_DIR}/mac/Info.plist")
 
-  add_library(QCefView ${QCEFVIEW_LIB_TYPE}
+  add_library(${CEFVIEW_LIB_NAME} ${QCEFVIEW_LIB_TYPE}
     ${QCefView_INCLUDE_FILES}
     ${QCefView_SRC_FILES}
     ${QCefView_details_SRC_FILES}
@@ -150,7 +158,7 @@ if(OS_MACOS)
     ${QCefView_INFO_PLIST_FILE}
   )
 
-  set_target_properties(QCefView
+  set_target_properties(${CEFVIEW_LIB_NAME}
     PROPERTIES
     FRAMEWORK TRUE
 
@@ -170,38 +178,38 @@ if(OS_MACOS)
     XCODE_ATTRIBUTE_LD_RUNPATH_SEARCH_PATHS "@executable_path/../Frameworks @loader_path/Frameworks"
   )
 
-  add_custom_command(TARGET QCefView
+  add_custom_command(TARGET ${CEFVIEW_LIB_NAME}
     POST_BUILD
 
     # create plugins directory
     COMMAND mkdir -p
-    "$<TARGET_BUNDLE_DIR:QCefView>/Resources/PlugIns/"
+    "$<TARGET_BUNDLE_DIR:${CEFVIEW_LIB_NAME}>/Resources/PlugIns/"
 
     # copy the CefViewCore binaries to resource directory
     COMMAND cp -a
-    "$<TARGET_BUNDLE_DIR:CefViewWing>/../"
-    "$<TARGET_BUNDLE_DIR:QCefView>/Resources/PlugIns/"
+    "$<TARGET_BUNDLE_DIR:${CEFVIEW_WING_NAME}>/../"
+    "$<TARGET_BUNDLE_DIR:${CEFVIEW_LIB_NAME}>/Resources/PlugIns/"
 
     # sign the cef framework
     COMMAND codesign
     --force
     --sign -
-    "$<TARGET_BUNDLE_DIR:QCefView>/Resources/PlugIns/Chromium Embedded Framework.framework"
+    "$<TARGET_BUNDLE_DIR:${CEFVIEW_LIB_NAME}>/Resources/PlugIns/Chromium Embedded Framework.framework"
   )
 endif() # OS_MACOS
 
-target_compile_definitions(QCefView PRIVATE NOMINMAX)
+target_compile_definitions(${CEFVIEW_LIB_NAME} PRIVATE NOMINMAX)
 
-target_include_directories(QCefView PRIVATE
+target_include_directories(${CEFVIEW_LIB_NAME} PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/../include"
   ${CefViewCore_EXPORT_INCLUDE_PATH}
 )
 
-add_dependencies(QCefView
+add_dependencies(${CEFVIEW_LIB_NAME}
   CefViewCore
 )
 
-target_link_libraries(QCefView
+target_link_libraries(${CEFVIEW_LIB_NAME}
   PUBLIC
   Qt${QT_VERSION_MAJOR}::Gui
   Qt${QT_VERSION_MAJOR}::Core
@@ -212,13 +220,13 @@ target_link_libraries(QCefView
 
 # install QCefView files
 install(
-  TARGETS QCefView
-  ARCHIVE DESTINATION "QCefView/lib$<$<CONFIG:Debug>:/Debug>"
-  LIBRARY DESTINATION "QCefView/bin$<$<CONFIG:Debug>:/Debug>"
-  FRAMEWORK DESTINATION "QCefView/lib$<$<CONFIG:Debug>:/Debug>"
+  TARGETS ${CEFVIEW_LIB_NAME}
+  ARCHIVE DESTINATION "lib"
+  LIBRARY DESTINATION "bin"
+  FRAMEWORK DESTINATION "lib"
 )
 
 if(NOT OS_MACOS)
-  install(DIRECTORY "${CMAKE_SOURCE_DIR}/include" DESTINATION "QCefView")
-  install(DIRECTORY "$<TARGET_FILE_DIR:QCefView>/" DESTINATION "QCefView/bin$<$<CONFIG:Debug>:/Debug>")
+  install(DIRECTORY "${CMAKE_SOURCE_DIR}/include" DESTINATION ".")
+  install(DIRECTORY "$<TARGET_FILE_DIR:${CEFVIEW_LIB_NAME}>/" DESTINATION "bin")
 endif()

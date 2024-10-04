@@ -27,9 +27,6 @@
     #else
         // Referenced by other project, import API 
         #define QCEFVIEW_EXPORT Q_DECL_IMPORT
-        #if _WIN32
-            #pragma comment(lib, "QCefView.lib")
-        #endif
     #endif
 #endif
 
