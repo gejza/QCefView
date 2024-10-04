@@ -221,12 +221,12 @@ target_link_libraries(QCefView
 # install QCefView files
 install(
   TARGETS QCefView
-  ARCHIVE DESTINATION "QCefView/lib$<$<CONFIG:Debug>:/Debug>"
-  LIBRARY DESTINATION "QCefView/bin$<$<CONFIG:Debug>:/Debug>"
-  FRAMEWORK DESTINATION "QCefView/lib$<$<CONFIG:Debug>:/Debug>"
+  ARCHIVE DESTINATION "lib"
+  LIBRARY DESTINATION "bin"
+  FRAMEWORK DESTINATION "lib"
 )
 
 if(NOT OS_MACOS)
-  install(DIRECTORY "${CMAKE_SOURCE_DIR}/include" DESTINATION "QCefView")
-  install(DIRECTORY "$<TARGET_FILE_DIR:QCefView>/" DESTINATION "QCefView/bin$<$<CONFIG:Debug>:/Debug>")
+  install(DIRECTORY "${CMAKE_SOURCE_DIR}/include" DESTINATION ".")
+  install(DIRECTORY "$<TARGET_FILE_DIR:QCefView>/" DESTINATION "bin")
 endif()
