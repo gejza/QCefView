@@ -299,6 +299,14 @@ public:
   /// Gets the remote debugging port
   /// </summary>
   const QVariant remoteDebuggingPort() const;
+  
+  /// Sets custom message handler, so that we could process messages them on our, Legion, side.
+  /// The log level, being defined by `level` parameter, will be between 1-4 with meaning:
+  /// 1: Debug.
+  /// 2: Info.
+  /// 3: Error.
+  /// 4: Fatal.
+  void installCustomMessageHandler(const std::function<void(int level, const char* message)>& callback);
 };
 
 Q_DECLARE_METATYPE(QCefConfig);

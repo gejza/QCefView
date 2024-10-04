@@ -276,3 +276,10 @@ QCefConfig::remoteDebuggingPort() const
   Q_D(const QCefConfig);
   return d->remoteDebuggingport_;
 }
+
+void
+QCefConfig::installCustomMessageHandler(const std::function<void(int level, const char* message)>& callback)
+{
+  Q_D(QCefConfig);
+  d->installCustomMessageHandler(callback);
+}

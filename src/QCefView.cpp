@@ -530,3 +530,17 @@ QCefView::contextMenuEvent(QContextMenuEvent* event)
     }
   }
 }
+
+void
+QCefView::setZoomLevel(double zoomLevel)
+{
+  Q_D(QCefView);
+  d->setZoomLevel(zoomLevel);
+}
+
+double
+QCefView::getZoomLevel()
+{
+  Q_D(QCefView);
+  return d->getZoomLevel();
+}

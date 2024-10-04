@@ -26,7 +26,6 @@ QCefContextPrivate::QCefContextPrivate(QCoreApplication* app, int argc, char** a
   cefWorkerTimer_.start(kCefWorkerIntervalMs);
   connect(&cefWorkerTimer_, SIGNAL(timeout()), this, SLOT(performCefLoopWork()));
 #endif
-
   connect(app, SIGNAL(aboutToQuit()), this, SLOT(onAboutToQuit()));
 }
 
@@ -134,6 +133,10 @@ QCefContextPrivate::clearCrossOriginWhitelistEntry()
 void
 QCefContextPrivate::uninitialize()
 {
+  // Wait for all the clients, i.e. Chromium browser instances,
+  // to finish their execution, before uninitializing CEF context.
+  onAboutToQuit();
+
   // cleanup CEF
   uninitializeCef();
 }

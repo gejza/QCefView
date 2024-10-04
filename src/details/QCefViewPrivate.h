@@ -21,12 +21,24 @@
 
 #include <QCefQuery.h>
 #include <QCefView.h>
+#include <QTimer>
 
 class QCefViewPrivate : public QObject
 {
   Q_OBJECT
   Q_DECLARE_PUBLIC(QCefView)
   QCefView* q_ptr;
+
+  /// This timer is continuously triggered with particular delay to set the zoom level of
+  /// Chromium browser to be equal to `QCefViewPrivate::zoomLevel_`. The value of
+  /// `QCefViewPrivate::zoomLevel_` is set via `QCefViewPrivate::setZoomLevel()` method.
+  /// This timer is continuously triggered with the given delay, to ensure that Chromium browser
+  /// catches the change in its zoom level, as otherwise, due to the Chromium browser running on
+  /// a separate thread, we wouldn't be sure about its state, e.g. even it has been created yet.
+  QTimer qZoomLevelTimer_;
+  
+  /// Default zoom level 0, means that the browser is running with the default 100% zoom.
+  double zoomLevel_ = 0.0;
 
   friend class CCefClientDelegate;
 
@@ -181,6 +193,10 @@ public:
   bool isOSRModeEnabled() const;
 
   QCefQuery createQuery(const QString& req, const int64_t id);
+  
+  void setZoomLevel(double zoomLevel);
+
+  double getZoomLevel();
 
 protected:
   void onCefBrowserCreated(CefRefPtr<CefBrowser> browser, QWindow* window);
@@ -236,6 +252,9 @@ public slots:
   void onContextMenuTriggered(QAction* action);
 
   void onContextMenuDestroyed(QObject* obj);
+
+  /// Continuously called by `QCefViewPrivate::qZoomLevelTimer_` with given delay.
+  void onZoomLevelTimerFinished() const;
 
 signals:
   void updateOsrFrame();

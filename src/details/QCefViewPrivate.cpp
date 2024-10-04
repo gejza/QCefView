@@ -53,11 +53,34 @@ QCefViewPrivate::QCefViewPrivate(QCefContextPrivate* ctx,
   sLiveInstances.insert(this);
 
   isOSRModeEnabled_ = pContextPrivate_->cefConfig()->WindowlessRenderingEnabled().toBool();
+  
+  // Set the timer to set the zoom level of the Chromium browser with given delay.
+  qZoomLevelTimer_.setTimerType(Qt::PreciseTimer);
+  constexpr int TIMER_DELAY_MS = 100;
+  qZoomLevelTimer_.start(TIMER_DELAY_MS);
+  connect(&qZoomLevelTimer_, SIGNAL(timeout()), this, SLOT(onZoomLevelTimerFinished()));
 }
 
 QCefViewPrivate::~QCefViewPrivate()
 {
   sLiveInstances.remove(this);
+}
+
+void
+QCefViewPrivate::onZoomLevelTimerFinished() const
+{
+  if (pCefBrowser_) {
+    CefRefPtr<CefBrowserHost> host = pCefBrowser_->GetHost();
+
+    if (host) {
+      // When setting the zoom level, we don't have to mutex lock the
+      // `QCefViewPrivate::zoomLevel_` member, due to the fact that `QTimer`
+      // gets triggered on the same thread, where an event loop that is assigned
+      // to it is running on. In our case, that event loop is Qt event loop,
+      // which runs on the main thread.
+      host->SetZoomLevel(zoomLevel_);
+    }
+  }
 }
 
 void
@@ -204,6 +227,27 @@ QCefQuery
 QCefViewPrivate::createQuery(const QString& req, const int64_t id)
 {
   return QCefQuery(this, req, id);
+}
+
+void
+QCefViewPrivate::setZoomLevel(double zoomLevel)
+{
+  zoomLevel_ = zoomLevel;
+  QTimer::singleShot(0, this, SLOT(onZoomLevelTimerFinished()));
+}
+
+double
+QCefViewPrivate::getZoomLevel()
+{
+  if (pCefBrowser_) {
+    CefRefPtr<CefBrowserHost> host = pCefBrowser_->GetHost();
+
+    if (host) {
+      return host->GetZoomLevel();
+    }
+  }
+
+  return 0;
 }
 
 void
