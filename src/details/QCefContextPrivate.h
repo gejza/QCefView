@@ -51,9 +51,9 @@ private:
   QList<FolderResourceMapping> folderResourceMappingList_;
   QList<ArchiveResourceMapping> archiveResourceMappingList_;
 
-#if defined(Q_OS_MACOS)
+  // Used to call `CefDoMessageLoopWork()` with a given delay
+  // to perform the messages loop work.
   QTimer cefWorkerTimer_;
-#endif
 
 #if defined(Q_OS_WINDOWS)
   HANDLE windowsJobHandle_ = nullptr;

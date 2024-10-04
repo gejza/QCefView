@@ -17,10 +17,16 @@ QCefContextPrivate::initializeCef(const QCefConfig* config)
   CefSettings cef_settings;
   QCefConfigPrivate::CopyToCefSettings(config, &cef_settings);
 
-  // fixed values
+  // Set CEF settings flags.
+  // We have to set `multi_threaded_message_loop` to `false`
+  // and `external_message_pump` to `true`, as we are integrating
+  // the CEF message loop into Qt message loop via `CefDoMessageLoopWork()`
+  // in `QCefContextPrivate::performCefLoopWork()`.
+  // This is explained in "Message Loop Integration" section of CEF general usage
+  // documentation: https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage
   cef_settings.pack_loading_disabled = false;
-  cef_settings.multi_threaded_message_loop = true;
-  cef_settings.external_message_pump = false;
+  cef_settings.multi_threaded_message_loop = false;
+  cef_settings.external_message_pump = true;
 
 #if !defined(CEF_USE_SANDBOX)
   cef_settings.no_sandbox = true;
@@ -35,7 +41,7 @@ QCefContextPrivate::initializeCef(const QCefConfig* config)
   } else {
     JOBOBJECT_EXTENDED_LIMIT_INFORMATION info;
     ::memset(&info, 0, sizeof(info));
-    info.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE | JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK;
+    info.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK;
     if (!::SetInformationJobObject(windowsJobHandle_, JobObjectExtendedLimitInformation, &info, sizeof(info))) {
       logE("Failed to set information for windows job object: %d", ::GetLastError());
     }

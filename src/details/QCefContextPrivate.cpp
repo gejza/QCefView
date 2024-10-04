@@ -21,11 +21,23 @@ QCefContextPrivate::QCefContextPrivate(QCoreApplication* app, int argc, char** a
   : argc_(argc)
   , argv_(argv)
 {
-#if defined(Q_OS_MACOS)
+  // We have to set the custom timer and call the processing of the message loop
+  // manually, as documentation is misleading, stating that
+  // `CefBrowserProcessHandler::OnScheduleMessagePumpWork()` should be called
+  // (that, in our case with `QCefView`, will call `QCefContextPrivate::scheduleCefLoopWork()`)
+  // to make a call to `CefDoMessageLoopWork()` (mentioned in "Message Loop Integration" section 
+  // of CEF general usage documentation: https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage).
+  // But calling `CefDoMessageLoopWork()` on demand is not enough for browsers to function
+  // properly, thus we get a blank page.
+  // In the example project of CEF, the callback `OnScheduleMessagePumpWork()`, aside from
+  // being called on demand, is called with frequency of 30 FPS to keep the browsers functioning:
+  // https://bitbucket.org/chromiumembedded/cef/src/5672/tests/shared/browser/main_message_loop_external_pump.cc
+  // We need a similar mechanism in `QCefView`, thus we add our own timer that makes a call
+  // to `CefDoMessageLoopWork()` with frequency of 60 FPS.
+  // More about this issue in this article: https://github.com/chromiumembedded/cef/issues/2968
   cefWorkerTimer_.setTimerType(Qt::PreciseTimer);
   cefWorkerTimer_.start(kCefWorkerIntervalMs);
   connect(&cefWorkerTimer_, SIGNAL(timeout()), this, SLOT(performCefLoopWork()));
-#endif
 
   connect(app, SIGNAL(aboutToQuit()), this, SLOT(onAboutToQuit()));
 }
@@ -134,6 +146,10 @@ QCefContextPrivate::clearCrossOriginWhitelistEntry()
 void
 QCefContextPrivate::uninitialize()
 {
+  // Wait for all the clients, i.e. Chromium browser instances,
+  // to finish their execution, before uninitializing CEF context.
+  onAboutToQuit();
+
   // cleanup CEF
   uninitializeCef();
 }
