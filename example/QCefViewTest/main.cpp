@@ -1,4 +1,4 @@
-﻿#include <QApplication>
+#include <QApplication>
 #include <QDir>
 
 #include <QCefContext.h>
@@ -27,7 +27,7 @@ main(int argc, char* argv[])
   // set user agent
   config.setUserAgent("QCefViewTest");
   // set log level
-  config.setLogLevel(QCefConfig::LOGSEVERITY_DEFAULT);
+  config.setLogLevel(QCefConfig::LOGSEVERITY_DEBUG);
   // set JSBridge object name (default value is CefViewClient)
   config.setBridgeObjectName("CallBridge");
   // set Built-in scheme name (default value is CefView)
@@ -36,24 +36,24 @@ main(int argc, char* argv[])
   config.setRemoteDebuggingPort(9000);
   // set background color for all browsers
   // (QCefSetting.setBackgroundColor will overwrite this value for specified browser instance)
-  config.setBackgroundColor(Qt::lightGray);
+  //config.setBackgroundColor(Qt::lightGray);
 
   // WindowlessRenderingEnabled is set to true by default,
   // set to false to disable the OSR mode
-  config.setWindowlessRenderingEnabled(true);
+  config.setWindowlessRenderingEnabled(false);
 
   // add command line args, you can any cef supported switches or parameters
   config.addCommandLineSwitch("use-mock-keychain");
-  // config.addCommandLineSwitch("disable-gpu");
+  config.addCommandLineSwitch("disable-gpu");
   // config.addCommandLineSwitch("enable-media-stream");
   // config.addCommandLineSwitch("allow-file-access-from-files");
   // config.addCommandLineSwitch("disable-spell-checking");
   // config.addCommandLineSwitch("disable-site-isolation-trials");
-  // config.addCommandLineSwitch("enable-aggressive-domstorage-flushing");
-  config.addCommandLineSwitchWithValue("renderer-process-limit", "1");
+  config.addCommandLineSwitch("enable-aggressive-domstorage-flushing");
+  config.addCommandLineSwitchWithValue("renderer-process-limit", "3");
   // allow remote debugging
   config.addCommandLineSwitchWithValue("remote-allow-origins", "*");
-  // config.addCommandLineSwitchWithValue("disable-features", "BlinkGenPropertyTrees,TranslateUI,site-per-process");
+  config.addCommandLineSwitchWithValue("disable-features", "BlinkGenPropertyTrees,TranslateUI,site-per-process");
 
 #if defined(Q_OS_MACOS) && defined(QT_DEBUG)
   // cef bugs on macOS debug build

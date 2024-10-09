@@ -1,4 +1,4 @@
-﻿#include <QCefConfig.h>
+#include <QCefConfig.h>
 
 #include "details/QCefConfigPrivate.h"
 #include "details/utils/CommonUtils.h"
@@ -295,5 +295,5 @@ void
 QCefConfig::installCustomMessageHandler(const std::function<void(int level, const char* message)>& callback)
 {
   Q_D(QCefConfig);
-  d->installCustomMessageHandler(callback);
+  //d->installCustomMessageHandler(callback);
 }

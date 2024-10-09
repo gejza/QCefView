@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #pragma region stl_headers
 #include <list>
@@ -27,7 +27,7 @@ public:
 
   static ArgsMap& GetCommandLineArgs(const QCefConfig* config);
 
-  void installCustomMessageHandler(const std::function<void(int level, const char* message)>& callback) const;
+  //void installCustomMessageHandler(const std::function<void(int level, const char* message)>& callback) const;
 
 public:
   std::string locale_;

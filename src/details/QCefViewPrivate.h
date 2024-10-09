@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #pragma region qt_headers
 #include <QMenu>
 #include <QMutex>
@@ -189,9 +189,9 @@ public:
 
   QCefQuery createQuery(const QString& req, const int64_t id);
   
-  void setZoomLevel(double zoomLevel);
+  //void setZoomLevel(double zoomLevel);
 
-  double getZoomLevel();
+  //double getZoomLevel();
 
 protected:
   void onCefBrowserCreated(CefRefPtr<CefBrowser> browser, QWindow* window);
@@ -251,7 +251,7 @@ public slots:
   void onContextMenuDestroyed(QObject* obj);
 
   /// Continuously called by `QCefViewPrivate::qZoomLevelTimer_` with given delay.
-  void onZoomLevelTimerFinished() const;
+  //void onZoomLevelTimerFinished() const;
 
 signals:
   void updateOsrFrame();

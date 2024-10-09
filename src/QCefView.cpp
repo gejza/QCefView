@@ -1,4 +1,4 @@
-﻿#include <QCefView.h>
+#include <QCefView.h>
 
 #pragma region qt_headers
 #include <QPainter>
@@ -499,13 +499,13 @@ QCefView::contextMenuEvent(QContextMenuEvent* event)
 void
 QCefView::setZoomLevel(double zoomLevel)
 {
-  Q_D(QCefView);
-  d->setZoomLevel(zoomLevel);
+  //Q_D(QCefView);
+  //d->setZoomLevel(zoomLevel);
 }
 
 double
 QCefView::getZoomLevel()
 {
-  Q_D(QCefView);
-  return d->getZoomLevel();
+  //Q_D(QCefView);
+  //return d->getZoomLevel();
 }
