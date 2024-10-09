@@ -87,14 +87,14 @@ public:
   bool isOSRModeEnabled_ = false;
 
   /// <summary>
-  /// Offscreen rendering private data
+  /// Off-screen rendering private data
   /// </summary>
   struct OsrPrivateData
   {
     /// <summary>
     ///
     /// </summary>
-    bool transparentPaintingEnabled = false;
+    bool transparentPaintingEnabled_ = false;
 
     /// <summary>
     ///
@@ -173,14 +173,11 @@ public:
 #endif
 
 public:
-  explicit QCefViewPrivate(QCefContextPrivate* ctx,
-                           QCefView* view,
-                           const QString& url,
-                           const QCefSetting* setting = nullptr);
+  explicit QCefViewPrivate(QCefContextPrivate* ctx, QCefView* view);
 
   ~QCefViewPrivate();
 
-  void createCefBrowser(QCefView* view, const QString& url, const QCefSetting* setting);
+  void createCefBrowser(QCefView* view, const QString& url, const QCefSettingPrivate* setting);
 
   void destroyCefBrowser();
 
@@ -189,8 +186,6 @@ public:
   void addArchiveResource(const QString& path, const QString& url, const QString& password = "", int priority = 0);
 
   void setCefWindowFocus(bool focus);
-
-  bool isOSRModeEnabled() const;
 
   QCefQuery createQuery(const QString& req, const int64_t id);
   
@@ -230,6 +225,8 @@ protected:
 
   bool requestCloseFromWeb(CefRefPtr<CefBrowser>& browser);
 
+  void render(QPainter* painter);
+
 public slots:
   void onAppFocusChanged(QWidget* old, QWidget* now);
 
@@ -264,6 +261,10 @@ protected:
 
   void onOsrUpdatePopupFrame(const QImage& frame, const QRegion& region);
 
+  void onOsrUpdateViewTexture(const CefAcceleratedPaintInfo& info, const QRegion& region);
+
+  void onOsrUpdatePopupTexture(const CefAcceleratedPaintInfo& info, const QRegion& region);
+
   void onBeforeCefContextMenu(const MenuBuilder::MenuData& data);
 
   void onRunCefContextMenu(QPoint pos, CefRefPtr<CefRunContextMenuCallback> callback);
@@ -290,6 +291,10 @@ protected:
 
   QVariant onViewInputMethodQuery(Qt::InputMethodQuery query) const;
 
+  void onPaintEngine(QPaintEngine*& engine) const;
+
+  void onPaintEvent(QPaintEvent* event);
+
   void onViewInputMethodEvent(QInputMethodEvent* event);
 
   void onViewVisibilityChanged(bool visible);
@@ -303,6 +308,8 @@ protected:
   void onViewMouseEvent(QMouseEvent* event);
 
   void onViewWheelEvent(QWheelEvent* event);
+
+  void onContextMenuEvent(const QPoint& pos);
 
 public:
   int browserId();
