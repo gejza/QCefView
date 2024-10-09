@@ -2,7 +2,7 @@
 
 #pragma region qt_headers
 #include <QDebug>
-#pragma endregion qt_headers
+#pragma endregion 
 
 #include "details/QCefContextPrivate.h"
 
@@ -54,7 +54,8 @@ QCefContext::addCookie(const QString& name, const QString& value, const QString&
 }
 
 bool
-QCefContext::deleteAllCookies() {
+QCefContext::deleteAllCookies()
+{
   Q_D(QCefContext);
 
   return d->deleteAllCookies();

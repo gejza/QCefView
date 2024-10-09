@@ -16,7 +16,7 @@
 #include <QVariantList>
 #include <QWidget>
 #include <QWindow>
-#pragma endregion qt_headers
+#pragma endregion
 
 #include <QCefDownloadItem.h>
 #include <QCefEvent.h>
@@ -385,6 +385,14 @@ signals:
   void loadingProgressChanged(double progress);
 
   /// <summary>
+  /// Gets called on built-in scheme URL access
+  /// </summary>
+  /// <param name="browserId">The browser id</param>
+  /// <param name="frameId">The frame id</param>
+  /// <param name="query">The full url</param>
+  void cefUrlRequest(const QCefBrowserId& browserId, const QCefFrameId& frameId, const QString& url);
+
+  /// <summary>
   /// Gets called on new <see cref="QCefQuery"/> request
   /// </summary>
   /// <param name="browserId">The browser id</param>
@@ -514,6 +522,11 @@ public:
   double getZoomLevel();
 
 protected:
+
+  /// <summary>
+  /// Please refer to QWidget::paintEngine
+  /// </summary>
+  QPaintEngine* paintEngine() const override;
 
   /// <summary>
   /// Please refer to QWidget::paintEvent

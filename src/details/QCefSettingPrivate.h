@@ -1,17 +1,17 @@
-#pragma once
+﻿#pragma once
 
 #pragma region stl_headers
 #include <list>
 #include <string>
-#pragma endregion stl_headers
+#pragma endregion 
 
 #pragma region cef_headers
 #include <include/cef_app.h>
-#pragma endregion cef_headers
+#pragma endregion 
 
 #pragma region qt_headers
 #include <QVariant>
-#pragma endregion qt_headers
+#pragma endregion 
 
 #include <QCefSetting.h>
 
@@ -25,13 +25,21 @@ class QCefSettingPrivate
 public:
   static void CopyFromCefBrowserSettings(QCefSetting* qs, const CefBrowserSettings* cs);
 
+  static void CopyFromCefBrowserSettings(QCefSettingPrivate* qsp, const CefBrowserSettings* cs);
+
   static void CopyToCefBrowserSettings(const QCefSetting* qs, CefBrowserSettings* cs);
+
+  static void CopyToCefBrowserSettings(const QCefSettingPrivate* qs, CefBrowserSettings* cs);
 
 public:
   explicit QCefSettingPrivate();
 
-  QSize initSize_;
+  //////////////////////////////////////////////////////////////////////////
+  // Non CEF browser setting values
+  QSize windowInitialSize_;
 
+  //////////////////////////////////////////////////////////////////////////
+  // CEF browser setting values
   std::string standardFontFamily_;
   std::string fixedFontFamily_;
   std::string serifFontFamily_;
@@ -66,4 +74,17 @@ public:
   /* bool */ QVariant webgl_;
 
   /* QColor */ QVariant backgroundColor_;
+
+private:
+  /// <summary>
+  ///
+  /// </summary>
+  /// <param name="cs"></param>
+  void copyFromCefBrowserSettings(const CefBrowserSettings* cs);
+
+  /// <summary>
+  ///
+  /// </summary>
+  /// <param name="cs"></param>
+  void copyToCefBrowserSettings(CefBrowserSettings* cs) const;
 };

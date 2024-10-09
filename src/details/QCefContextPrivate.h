@@ -1,18 +1,18 @@
 ﻿#pragma once
 
-#pragma region std_headers
+#pragma region stl_headers
 #include <atomic>
 #include <memory>
 #include <mutex>
 #include <string>
-#pragma endregion std_headers
+#pragma endregion 
 
 #pragma region qt_headers
 #include <QCoreApplication>
 #include <QList>
 #include <QObject>
 #include <QTimer>
-#pragma endregion qt_headers
+#pragma endregion 
 
 #include <CefViewBrowserApp.h>
 #include <CefViewBrowserClient.h>
@@ -43,25 +43,58 @@ class QCefContextPrivate : public QObject
   Q_OBJECT
 
 private:
+  /// <summary>
+  ///
+  /// </summary>
   int argc_;
+
+  /// <summary>
+  ///
+  /// </summary>
   char** argv_;
 
-private:
+  /// <summary>
+  ///
+  /// </summary>
   const QCefConfig* config_;
+
+  /// <summary>
+  ///
+  /// </summary>
   QList<FolderResourceMapping> folderResourceMappingList_;
+
+  /// <summary>
+  ///
+  /// </summary>
   QList<ArchiveResourceMapping> archiveResourceMappingList_;
 
 #if defined(Q_OS_MACOS) || defined(CEF_USE_QT_EVENT_LOOP)
+  /// <summary>
+  ///
+  /// </summary>
   QTimer cefWorkerTimer_;
 #endif
 
 #if defined(Q_OS_WINDOWS)
+  /// <summary>
+  ///
+  /// </summary>
   HANDLE windowsJobHandle_ = nullptr;
+
+  /// <summary>
+  ///
+  /// </summary>
   QString windowsJobName_;
 #endif
 
-private:
+  /// <summary>
+  ///
+  /// </summary>
   CefRefPtr<CefViewBrowserApp> pApp_;
+
+  /// <summary>
+  ///
+  /// </summary>
   CCefAppDelegate::RefPtr pAppDelegate_;
 
 public:
