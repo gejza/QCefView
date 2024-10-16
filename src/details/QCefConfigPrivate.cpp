@@ -1,4 +1,4 @@
-﻿#include "QCefConfigPrivate.h"
+#include "QCefConfigPrivate.h"
 
 #pragma region qt_headers
 #include <QCoreApplication>
@@ -119,5 +119,5 @@ void
 QCefConfigPrivate::installCustomMessageHandler(
   const std::function<void(int level, const char* message)>& callback) const
 {
-  CefViewBrowserApp::installCustomMessageHandler(callback);
+  //CefViewBrowserApp::installCustomMessageHandler(callback);
 }

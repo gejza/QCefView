@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #pragma region qt_headers
 #include <QMenu>
 #include <QMutex>
@@ -334,7 +334,7 @@ public:
 
   bool triggerEvent(const QString& name,
                     const QVariantList& args,
-                    const QCefFrameId& frameId = ValueConvertor::FrameIdC2Q(CefViewBrowserClient::MAIN_FRAME));
+                    const QCefFrameId& frameId = ValueConvertor::FrameIdC2Q(CefViewBrowserClient::MAIN_FRAME()));
 
   bool responseQCefQuery(const QCefQuery& query);
 
