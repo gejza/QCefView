@@ -4,61 +4,9 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QString>
-#include <QFileInfo>
-#pragma endregion qt_headers
+#pragma endregion 
 
 #include <CefViewCoreProtocol.h>
-#include <CefViewWingProcessName.h>
-#include <CefViewBrowserApp.h>
-
-#ifdef _WIN32
-#   include <windef.h>
-#else
-#   ifdef __APPLE__
-#      include <libproc.h>
-#      include <Security/SecRandom.h>
-#   else
-#      include <linux/random.h>
-#      include <locale>
-#      include <sys/syscall.h>
-#   endif
-#   include <dlfcn.h>
-#   include <sstream>
-#   include <unistd.h>
-#endif
-
-// Returns the absolute path to the directory, where library with 
-// symbol `moduleSymbolAddress` is located. This symbol can be any 
-// static method of any class inside this library.
-static QDir getModuleFilePath(const void* moduleSymbolAddress) {
-#ifdef _WIN32
-    HMODULE hModule = nullptr;
-
-    // Do not use GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT in GetModuleHandleEx, 
-    // as in multithreaded environment, the specified module can be unloaded at any time.
-    const DWORD flags  = GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS;
-    const BOOL  result = GetModuleHandleEx(flags, LPCTSTR(moduleSymbolAddress), &hModule);
-
-    if (!result) {
-        return QDir("");
-    }
-
-    constexpr unsigned PATH_SIZE = 4096;
-    wchar_t            path[PATH_SIZE];
-    DWORD              length = GetModuleFileNameW(hModule, path, PATH_SIZE);
-    
-    // Module's reference count was incremented by GetModuleHandleEx.
-    FreeLibrary(hModule);
-
-    // Return an absolute path of the parent directory, instead of the path 
-    // of the DLL itself.
-    return QFileInfo(QString::fromWCharArray(path, length)).absoluteDir();
-#else
-    Dl_info info = {};
-    dladdr(moduleSymbolAddress, &info);
-    return QFileInfo(QString::fromUtf8(info.dli_fname)).absoluteDir();
-#endif
-}
 
 QCefConfigPrivate::QCefConfigPrivate()
 {
