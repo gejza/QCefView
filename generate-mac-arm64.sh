@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BUILD_PROJECT=0
+BUILD_PROJECT=1
 
 BUILD_DIR="$(pwd)/.build/macos.arm64"
 
