@@ -27,7 +27,7 @@ main(int argc, char* argv[])
   // set user agent
   config.setUserAgent("QCefViewTest");
   // set log level
-  config.setLogLevel(QCefConfig::LOGSEVERITY_DEFAULT);
+  config.setLogLevel(QCefConfig::LOGSEVERITY_DEBUG);
   // set JSBridge object name (default value is CefViewClient)
   config.setBridgeObjectName("CallBridge");
   // set Built-in scheme name (default value is CefView)
@@ -53,7 +53,8 @@ main(int argc, char* argv[])
   config.addCommandLineSwitchWithValue("renderer-process-limit", "3");
   // allow remote debugging
   config.addCommandLineSwitchWithValue("remote-allow-origins", "*");
-  // config.addCommandLineSwitchWithValue("disable-features", "BlinkGenPropertyTrees,TranslateUI,site-per-process");
+  //config.addCommandLineSwitchWithValue("disable-features", "BlinkGenPropertyTrees,TranslateUI,site-per-process");
+  //config.addCommandLineSwitchWithValue("disable-features", "BlinkGenPropertyTrees");
 
 #if defined(Q_OS_MACOS) && defined(QT_DEBUG)
   // cef bugs on macOS debug build
