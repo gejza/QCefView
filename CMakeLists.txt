@@ -42,6 +42,8 @@ option(USE_QT_EVENT_LOOP
   OFF
 )
 
+set(CMAKE_DEBUG_POSTFIX "_debug")
+
 # append cmake config module path
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
