@@ -3,6 +3,7 @@
 #import <Cocoa/Cocoa.h>
 #import <objc/runtime.h>
 
+#include <iostream>
 #pragma region cef_headers
 #include <include/cef_application_mac.h>
 #include <include/cef_sandbox_mac.h>
