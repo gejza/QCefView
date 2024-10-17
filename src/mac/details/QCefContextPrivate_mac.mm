@@ -27,13 +27,20 @@
 
 @implementation PathFactory
 + (NSString*) AppMainBundlePath {
-  return [[NSBundle mainBundle] bundlePath];
+  NSString* path = [[NSBundle mainBundle] bundlePath];
+  
+  // Logování cesty
+  NSLog(@"App Main Bundle Path: %@", path);
+  
+  return path;
 }
 
 + (NSString*) CefFrameworkPath {
   NSString* path =  [[NSBundle bundleForClass:[PathFactory class]] resourcePath];
   path = [path stringByAppendingPathComponent:@PLUGINS_NAME];
   path = [path stringByAppendingPathComponent:@CEF_FRAMEWORK_NAME];
+  NSLog(@"CEF Framework Path: %@", path);
+
   return path;
 }
 
@@ -44,6 +51,7 @@
   path = [path stringByAppendingPathComponent:@"Contents"];
   path = [path stringByAppendingPathComponent:@"MacOS"];
   path = [path stringByAppendingPathComponent:@HELPER_BINARY_NAME];
+  NSLog(@"CEF Subprocess Path: %@", path);
   return path;
 }
 @end
@@ -112,6 +120,8 @@ appMainBundlePath()
   @autoreleasepool {
     path = [PathFactory AppMainBundlePath].UTF8String;
   }
+
+NSLog(@"The application path is: %@", path);
   return path.c_str();
 }
 
