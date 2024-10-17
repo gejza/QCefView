@@ -121,7 +121,7 @@ appMainBundlePath()
     path = [PathFactory AppMainBundlePath].UTF8String;
   }
 
-NSLog(@"The application path is: %@", path);
+  std::cout << "Tha app path" << path << std::endl;
   return path.c_str();
 }
 
