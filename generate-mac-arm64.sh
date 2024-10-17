@@ -12,7 +12,7 @@ do
 done
 
 echo ============== Config project ==============
-cmake -G "Xcode" -S . -B "${BUILD_DIR}" -DPROJECT_ARCH=arm64 -DBUILD_DEMO=ON -DUSE_SANDBOX=OFF -DCMAKE_INSTALL_PREFIX:PATH="$(pwd)/out/macos.arm64" $*
+cmake -G "Xcode" -S . -B "${BUILD_DIR}" -DPROJECT_ARCH=arm64  -DCEFVIEW_LIB_NAME=QCefView_debug  -DCEFVIEW_WING_NAME=CefViewWing -DCMAKE_DEBUG_POSTFIX=_debug -DBUILD_DEMO=OFF -DUSE_SANDBOX=OFF -DCMAKE_INSTALL_PREFIX:PATH="$(pwd)/out/macos.arm64" $*
 
 if [ ${BUILD_PROJECT} -eq 1 ] 
 then

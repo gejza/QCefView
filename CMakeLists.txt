@@ -42,7 +42,6 @@ option(USE_QT_EVENT_LOOP
   OFF
 )
 
-set(CMAKE_DEBUG_POSTFIX "_debug")
 
 # append cmake config module path
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -54,6 +53,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+set( CMAKE_DEBUG_POSTFIX _debug )
 # Use folders in the resulting project files.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 

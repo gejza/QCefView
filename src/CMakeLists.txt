@@ -158,10 +158,12 @@ if(OS_MACOS)
     PROPERTIES
     FRAMEWORK TRUE
 
+	DEBUG_POSTFIX _debug
     # compiler settings
     COMPILE_FLAGS "-fobjc-arc"
     CLANG_ENABLE_OBJC_ARC "YES"
 
+	OUTPUT_NAME "${CEFVIEW_LIB_NAME}"
     # xcode settings
     PUBLIC_HEADER "${QCefView_INCLUDE_HEADERS}"
     MACOSX_FRAMEWORK_INFO_PLIST "${QCefView_INFO_PLIST_FILE}"
