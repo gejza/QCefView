@@ -218,6 +218,7 @@ target_link_libraries(QCefView
   Qt${QT_VERSION_MAJOR}::Widgets
   PRIVATE
   CefViewCore
+  libcef_dll_wrapper
 )
 
 # install QCefView files

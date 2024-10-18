@@ -65,6 +65,10 @@ public:
                               const std::string& context,
                               const CefRefPtr<CefValue>& result) override;
 
+  virtual void onBeforeResourceLoad(CefRefPtr<CefBrowser> browser,
+                                             CefRefPtr<CefFrame> frame,
+                                             CefRefPtr<CefRequest> request) override;
+
   // ContextMenuHandler
   virtual void onBeforeContextMenu(CefRefPtr<CefBrowser> browser,
                                    CefRefPtr<CefFrame> frame,

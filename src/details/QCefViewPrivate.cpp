@@ -14,6 +14,7 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QWindow>
+#include <iostream>
 #pragma endregion 
 
 #pragma region cef_headers
@@ -32,6 +33,7 @@
 #include "utils/KeyboardUtils.h"
 #include "utils/MenuBuilder.h"
 #include "utils/ValueConvertor.h"
+
 
 QSet<QCefViewPrivate*> QCefViewPrivate::sLiveInstances;
 

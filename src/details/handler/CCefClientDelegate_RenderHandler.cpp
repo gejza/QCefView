@@ -7,7 +7,26 @@
 
 #include "details/QCefViewPrivate.h"
 
+#include <iostream>
+
+
 // OSR mode
+
+void 
+CCefClientDelegate::onBeforeResourceLoad(CefRefPtr<CefBrowser> browser,
+                                             CefRefPtr<CefFrame> frame,
+                                             CefRefPtr<CefRequest> request)
+{
+	std::cerr << "onBeforeResourceLoad" << request->GetURL() << std::endl;
+	 CefRequest::HeaderMap headerMap;
+    request->GetHeaderMap(headerMap);
+
+    // Výpis hlaviček
+    std::cerr << "Headers:" << std::endl;
+    for (const auto& header : headerMap) {
+		std::cerr << header.first.ToString() << ": " << header.second.ToString() << std::endl;
+	}
+}
 
 bool
 CCefClientDelegate::getRootScreenRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
