@@ -101,6 +101,8 @@ public:
   /// </summary>
   ~QCefView();
 
+  void setRequestHeader(const QString& name, const QString& value);
+
   /// <summary>
   /// Adds a url mapping item with local web resource directory
   /// </summary>

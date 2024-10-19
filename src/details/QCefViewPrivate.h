@@ -169,6 +169,8 @@ public:
   /// </summary>
   CefString lastUrl_;
 
+  QMap<QString, QString> extra_headers_;
+
 #if defined(QT_DEBUG)
   QElapsedTimer paintTimer_;
 #endif

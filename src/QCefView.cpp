@@ -59,6 +59,11 @@ QCefView::~QCefView()
   }
 }
 
+void QCefView::setRequestHeader(const QString& name, const QString& value) {
+  Q_D(QCefView);
+  d->extra_headers_[name] = value;
+}
+
 void
 QCefView::addLocalFolderResource(const QString& path, const QString& url, int priority /*= 0*/)
 {
