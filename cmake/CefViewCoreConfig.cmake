@@ -4,7 +4,7 @@ include(FetchContent)
 FetchContent_Declare(
     CefViewCore
     GIT_REPOSITORY https://github.com/gejza/CefViewCore.git
-    GIT_TAG 39db0637efc4f948b284a81cda038dbe4c6035e3
+    GIT_TAG a3918c61625e24592a539a2a94d02489e18b6ab6
 )
 
 # set CEF version to be used
