@@ -276,6 +276,12 @@ public:
   void closeDevTools();
 
   /// <summary>
+  /// Sends a message to the DevTools protocol of the browser, allowing 
+  /// </summary>
+  /// <param name="message">The JSON-formatted message to send to the DevTools API.</param>
+  void sendDevToolsMessage(const QString& message);
+
+  /// <summary>
   /// Sets whether to enable drag and drop
   /// </summary>
   /// <param name="enable">True to enable; otherwise false</param>
@@ -490,6 +496,12 @@ protected:
   /// </summary>
   /// <returns>True to allow the close, false to cancel the close</returns>
   virtual bool onRequestCloseFromWeb();
+
+  /// <summary>
+  /// Get called on message from dev tools
+  /// </summary>
+  /// <param name="message">The JSON-formatted message received from the DevTools API.</param>
+  virtual bool onDevToolsMessage(const QString& message);
 
 #pragma region QWidget
 public slots:

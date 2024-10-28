@@ -85,6 +85,11 @@ public:
   /// <summary>
   ///
   /// </summary>
+  CefRefPtr<CefRegistration> pDevToolsMessageObserver_ = nullptr;
+
+  /// <summary>
+  ///
+  /// </summary>
   bool isOSRModeEnabled_ = false;
 
   /// <summary>
@@ -256,6 +261,7 @@ public slots:
   /// Continuously called by `QCefViewPrivate::qZoomLevelTimer_` with given delay.
   void onZoomLevelTimerFinished() const;
 
+  bool onDevToolsMessage(const QString& message);
 signals:
   void updateOsrFrame();
 
@@ -289,6 +295,7 @@ protected:
 
   void closeDevTools();
 
+  void sendDevToolsMessage(const QString& message);
 protected:
   bool eventFilter(QObject* watched, QEvent* event) override;
 

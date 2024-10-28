@@ -344,6 +344,12 @@ QCefView::onRequestCloseFromWeb()
   return true;
 }
 
+bool
+QCefView::onDevToolsMessage(const QString& message)
+{
+  return false;
+}
+
 void
 QCefView::leaveEvent(QEvent* event)
 {

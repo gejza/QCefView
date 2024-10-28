@@ -28,6 +28,7 @@
 
 #include "CCefClientDelegate.h"
 #include "QCefContext.h"
+#include "CCefDevToolsMessageObserver.h"
 #include "QCefSettingPrivate.h"
 #include "utils/CommonUtils.h"
 #include "utils/KeyboardUtils.h"
@@ -815,6 +816,29 @@ QCefViewPrivate::closeDevTools()
       host->CloseDevTools();
     }
   }
+}
+
+void
+QCefViewPrivate::sendDevToolsMessage(const QString& message) {
+  if (pCefBrowser_) {
+    CefRefPtr<CefBrowserHost> host = pCefBrowser_->GetHost();
+    if (host) {
+      if (!pDevToolsMessageObserver_) {
+        pDevToolsMessageObserver_ = host->AddDevToolsMessageObserver(new CCefDevToolsMessageObserver(this));
+      }
+
+      const std::string m = message.toStdString();
+      host->SendDevToolsMessage(m.c_str(), m.size());
+    }
+  }  
+}
+
+bool
+QCefViewPrivate::onDevToolsMessage(const QString& message)
+{
+  Q_Q(QCefView);
+
+  return q->onDevToolsMessage(message);
 }
 
 bool
