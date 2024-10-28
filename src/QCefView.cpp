@@ -1,4 +1,4 @@
-#include <QCefView.h>
+﻿#include <QCefView.h>
 
 #pragma region qt_headers
 #include <QPainter>
@@ -344,8 +344,15 @@ QCefView::onRequestCloseFromWeb()
   return true;
 }
 
+void
+QCefView::sendDevToolsMessage(const QJsonDocument& message)
+{
+  Q_D(QCefView);
+  d->sendDevToolsMessage(message.toJson(QJsonDocument::Compact));
+}
+
 bool
-QCefView::onDevToolsMessage(const QString& message)
+QCefView::onDevToolsMessage(const QJsonDocument& message)
 {
   return false;
 }

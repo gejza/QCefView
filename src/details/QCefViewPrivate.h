@@ -261,7 +261,7 @@ public slots:
   /// Continuously called by `QCefViewPrivate::qZoomLevelTimer_` with given delay.
   void onZoomLevelTimerFinished() const;
 
-  bool onDevToolsMessage(const QString& message);
+  bool onDevToolsMessage(const QByteArray& message);
 signals:
   void updateOsrFrame();
 
@@ -295,7 +295,7 @@ protected:
 
   void closeDevTools();
 
-  void sendDevToolsMessage(const QString& message);
+  void sendDevToolsMessage(const QByteArray& message);
 protected:
   bool eventFilter(QObject* watched, QEvent* event) override;
 

@@ -16,6 +16,7 @@
 #include <QVariantList>
 #include <QWidget>
 #include <QWindow>
+#include <QJsonDocument>
 #pragma endregion
 
 #include <QCefDownloadItem.h>
@@ -278,8 +279,8 @@ public:
   /// <summary>
   /// Sends a message to the DevTools protocol of the browser, allowing 
   /// </summary>
-  /// <param name="message">The JSON-formatted message to send to the DevTools API.</param>
-  void sendDevToolsMessage(const QString& message);
+  /// <param name="message">The JSON message to send to the DevTools API.</param>
+  void sendDevToolsMessage(const QJsonDocument& message);
 
   /// <summary>
   /// Sets whether to enable drag and drop
@@ -498,10 +499,10 @@ protected:
   virtual bool onRequestCloseFromWeb();
 
   /// <summary>
-  /// Get called on message from dev tools
+  /// Get called on message answer from dev tools
   /// </summary>
   /// <param name="message">The JSON-formatted message received from the DevTools API.</param>
-  virtual bool onDevToolsMessage(const QString& message);
+  virtual bool onDevToolsMessage(const QJsonDocument& message);
 
 #pragma region QWidget
 public slots:

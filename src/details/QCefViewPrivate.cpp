@@ -819,7 +819,7 @@ QCefViewPrivate::closeDevTools()
 }
 
 void
-QCefViewPrivate::sendDevToolsMessage(const QString& message) {
+QCefViewPrivate::sendDevToolsMessage(const QByteArray& message) {
   if (pCefBrowser_) {
     CefRefPtr<CefBrowserHost> host = pCefBrowser_->GetHost();
     if (host) {
@@ -827,18 +827,17 @@ QCefViewPrivate::sendDevToolsMessage(const QString& message) {
         pDevToolsMessageObserver_ = host->AddDevToolsMessageObserver(new CCefDevToolsMessageObserver(this));
       }
 
-      const std::string m = message.toStdString();
-      host->SendDevToolsMessage(m.c_str(), m.size());
+      host->SendDevToolsMessage(message.data(), message.size());
     }
   }  
 }
 
 bool
-QCefViewPrivate::onDevToolsMessage(const QString& message)
+QCefViewPrivate::onDevToolsMessage(const QByteArray& message)
 {
   Q_Q(QCefView);
-
-  return q->onDevToolsMessage(message);
+    
+  return q->onDevToolsMessage(QJsonDocument::fromJson(message));
 }
 
 bool
