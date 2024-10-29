@@ -27,21 +27,11 @@ CCefClientDelegate::onBeforeResourceLoad(CefRefPtr<CefBrowser> browser,
                                              CefRefPtr<CefFrame> frame,
                                              CefRefPtr<CefRequest> request)
 {
-	qInfo() << "onBeforeResourceLoad" << request->GetURL().ToString().c_str();
   QMapIterator<QString, QString> it(pCefViewPrivate_->extra_headers_);
   while (it.hasNext()) {
       it.next();
       request->SetHeaderByName(it.key().toStdString(), it.value().toStdString(), true);
   }
-
-	 CefRequest::HeaderMap headerMap;
-    request->GetHeaderMap(headerMap);
-
-    // Výpis hlaviček
-    qInfo() << "Headers:";
-    for (const auto& header : headerMap) {
-		  qInfo() << header.first.ToString().c_str() << ": " << header.second.ToString().c_str();
-    }
 }
 
 void

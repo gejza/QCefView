@@ -836,8 +836,15 @@ bool
 QCefViewPrivate::onDevToolsMessage(const QByteArray& message)
 {
   Q_Q(QCefView);
-    
-  return q->onDevToolsMessage(QJsonDocument::fromJson(message));
+  QJsonParseError parseError;
+  QJsonDocument jsonDoc = QJsonDocument::fromJson(message, &parseError);
+
+  if (parseError.error != QJsonParseError::NoError) {
+      qWarning() << "Error parsing JSON:" << parseError.errorString();
+      return false;
+  }
+
+  return q->onDevToolsMessage(jsonDoc);
 }
 
 bool
