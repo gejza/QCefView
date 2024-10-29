@@ -61,6 +61,11 @@ if(OS_WINDOWS)
     ${QCefView_Windows_SRC_FILES}
   )
 
+  set_target_properties(QCefView
+    PROPERTIES
+	OUTPUT_NAME "${CEFVIEW_LIB_NAME}"
+  )
+
   target_compile_definitions(QCefView PRIVATE
     UNICODE
     _UNICODE
