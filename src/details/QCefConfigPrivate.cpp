@@ -9,6 +9,10 @@
 #include <CefViewCoreProtocol.h>
 #include <CefViewBrowserApp.h>
 
+#ifndef _WIN32
+#include <dlfcn.h>
+#endif
+
 // Returns the absolute path to the directory, where library with 
 // symbol `moduleSymbolAddress` is located. This symbol can be any 
 // static method of any class inside this library.

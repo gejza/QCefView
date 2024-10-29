@@ -185,7 +185,7 @@ if(OS_MACOS)
 
     # copy the CefViewCore binaries to resource directory
     COMMAND cp -a
-    "$<TARGET_BUNDLE_DIR:CefViewWing>/../"
+    "$<TARGET_BUNDLE_DIR:${CEFVIEW_WING_NAME}>/../"
     "$<TARGET_BUNDLE_DIR:QCefView>/Resources/PlugIns/"
 
     # adjust file permission
