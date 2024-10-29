@@ -32,7 +32,6 @@ option(USE_SANDBOX
   OFF
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -frtti")
 # Only works for Windows & Linux, always enabled on macOS
 # If enable then:
 # CefSettings.multi_threaded_message_loop = false && CefSettings.external_message_pump = true
@@ -42,7 +41,6 @@ option(USE_QT_EVENT_LOOP
   "Enable the integration of CEF message loop thread into Qt event loop"
   OFF
 )
-
 
 # append cmake config module path
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -54,7 +52,6 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-set( CMAKE_DEBUG_POSTFIX _debug )
 # Use folders in the resulting project files.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -216,8 +213,7 @@ if(OS_MACOS)
   if(${Qt_VERSION} VERSION_GREATER_EQUAL 6.5)
     set(QT_MIN_DEPLOYMENT_TARGET 11.0)
   elseif(${Qt_VERSION} VERSION_GREATER_EQUAL 6.2)
-	  #set(QT_MIN_DEPLOYMENT_TARGET 10.14)
-    set(QT_MIN_DEPLOYMENT_TARGET 11.0)
+    set(QT_MIN_DEPLOYMENT_TARGET 10.14)
   elseif(${Qt_VERSION} VERSION_GREATER_EQUAL 5.14)
     set(QT_MIN_DEPLOYMENT_TARGET 10.13)
   elseif(${Qt_VERSION} VERSION_GREATER_EQUAL 5.13)
@@ -231,12 +227,13 @@ if(OS_MACOS)
   # detect minimum deployment target by CEF
   # plese refere to: https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md
   if(${CEF_VERSION_MAJOR} VERSION_GREATER_EQUAL 117)
-	  set(CEF_MIN_DEPLOYMENT_TARGET 10.15)
+    set(CEF_MIN_DEPLOYMENT_TARGET 10.14)
   elseif(${CEF_VERSION_MAJOR} VERSION_GREATER_EQUAL 104)
     set(CEF_MIN_DEPLOYMENT_TARGET 10.13)
   else()
     set(CEF_MIN_DEPLOYMENT_TARGET 10.11)
   endif()
+
   # use the greater one as the minimum deployment target
   if(${QT_MIN_DEPLOYMENT_TARGET} VERSION_LESS ${CEF_MIN_DEPLOYMENT_TARGET})
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${CEF_MIN_DEPLOYMENT_TARGET})
